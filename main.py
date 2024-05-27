@@ -1,13 +1,28 @@
 from typing import List
 
+
+from sqlmodel import create_engine, SQLModel, Session
 import uvicorn
 from fastapi import FastAPI, HTTPException
 
-from schemas import load_db, save_db, WorkerInput, WorkerOutput
+from schemas import load_db, save_db, WorkerInput, WorkerOutput, JobInput, JobOutput, Worker
 
 app = FastAPI(title="Rectuitment Info")
-
+#json db
 db = load_db()
+#database creation (change from sqlite to Postgresql or whatever)
+engine = create_engine(
+    "sqlite:///rectuitment.db",
+    connect_args={"check_same_thread": False},
+    echo=True,
+)
+
+
+#start function
+@app.on_event("startup")
+def startup():
+    SQLModel.metadata.create_all(engine)
+
 
 @app.get("/api/workers")
 async def get_workers(age:int|None=None, profession:str|None=None) -> List:
@@ -25,13 +40,15 @@ async def worker_by_id(id:int):
     else:
         raise HTTPException(status_code=404, detail="No Worker Found")
 
-@app.post("/api/workers/", response_model=WorkerOutput)
-async def add_worker(worker: WorkerInput) -> WorkerOutput:
-    new_worker = WorkerOutput(name=worker.name, age=worker.age,
-                              profession=worker.profession, id=len(db)+1)
-    db.append(new_worker)
-    save_db(db)
-    return new_worker
+@app.post("/api/workers/", response_model=Worker)
+async def add_worker(worker_input: WorkerInput) -> Worker:
+    #creating transaction to execute a bunch of operations together or don't execute anything
+    with Session(engine) as session:
+        new_worker = Worker.from_orm(worker_input)
+        session.add(new_worker)
+        session.commit()
+        session.refresh(new_worker)
+        return new_worker
 
 
 @app.delete("/api/workers/{id}", status_code=204)

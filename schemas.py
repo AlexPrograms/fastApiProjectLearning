@@ -1,8 +1,21 @@
 import json
+from datetime import date
 
-from pydantic import BaseModel
+from sqlmodel import SQLModel, Field, Relationship
+#from pydantic import BaseModel
 
-class WorkerInput(BaseModel):
+
+class JobInput(SQLModel):
+    title: str
+    salary: float
+    description: str
+    location: str
+    start_date: date | None
+    end_date: date | None
+
+
+
+class WorkerInput(SQLModel):
     name: str
     age: int | None
     profession: str | None
@@ -16,9 +29,15 @@ class WorkerInput(BaseModel):
             }
         }
 
+class Worker(WorkerInput, table = True):
+    id: int | None = Field(primary_key=True, default=None)
+
 class WorkerOutput(WorkerInput):
     id: int
 
+class JobOutput(JobInput):
+    id: int
+    employees: list[WorkerOutput]=[]
 
 
 
