@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d56d4ae-27fc-4457-aa10-54aa626202c0" name="Changes" comment="Basics part 2 (delete, put, post, json files)">
+    <list default="true" id="7d56d4ae-27fc-4457-aa10-54aa626202c0" name="Changes" comment="Basics part 3 (creating sqlite db)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/workers.json" beforeDir="false" afterPath="$PROJECT_DIR$/workers.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +104,7 @@
       <workItem from="1716286531951" duration="11453000" />
       <workItem from="1716638638709" duration="8057000" />
       <workItem from="1716753431387" duration="1800000" />
-      <workItem from="1716793912753" duration="6594000" />
+      <workItem from="1716793912753" duration="14728000" />
     </task>
     <task id="LOCAL-00001" summary="Basic Get">
       <option name="closed" value="true" />
@@ -129,7 +130,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716795764995</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Basics part 3 (creating sqlite db)">
+      <option name="closed" value="true" />
+      <created>1716801127292</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1716801127292</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,9 +148,10 @@
     <MESSAGE value="Basic Get" />
     <MESSAGE value="Basics part 1" />
     <MESSAGE value="Basics part 2 (delete, put, post, json files)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Basics part 2 (delete, put, post, json files)" />
+    <MESSAGE value="Basics part 3 (creating sqlite db)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Basics part 3 (creating sqlite db)" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/fastApiProjectLearning$fastApiProjectLearning.coverage" NAME="fastApiProjectLearning Coverage Results" MODIFIED="1716799971811" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/fastApiProjectLearning$fastApiProjectLearning.coverage" NAME="fastApiProjectLearning Coverage Results" MODIFIED="1716809242031" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
