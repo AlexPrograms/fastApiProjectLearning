@@ -1,36 +1,62 @@
-from datetime import datetime
 from typing import List
 
 import uvicorn
 from fastapi import FastAPI, HTTPException
 
-app = FastAPI()
+from schemas import load_db, save_db, WorkerInput, WorkerOutput
 
-db = [
-    {"id": 1, "name": "Anna", "age": 25, "profession": "Cleaner"},
-{"id": 2, "name": "Konstantin", "age": 25, "profession": "Rectuiter"},
-{"id": 3, "name": "Julia", "age": 30, "profession": "Teacher"},
-{"id": 4, "name": "Vlad", "age": 66, "profession": "Manager"},
-{"id": 5, "name": "Danny", "age": 32, "profession": "Bloger"},
-{"id": 6, "name": "Tommy", "age": 21, "profession": "Youtuber"}
-]
+app = FastAPI(title="Rectuitment Info")
+
+db = load_db()
 
 @app.get("/api/workers")
 async def get_workers(age:int|None=None, profession:str|None=None) -> List:
     result = db
     if age is not None:
-        result = [worker for worker in result if worker["age"] == age]
+        result = [worker for worker in result if worker.age == age]
     if profession is not None:
-        result = [worker for worker in result if worker["profession"].lower() == profession.lower()]
+        result = [worker for worker in result if worker.profession.lower() == profession.lower()]
     return result
 @app.get("/api/workers/{id}")
-async def car_by_id(id:int) -> dict:
-    result = [worker for worker in db if worker["id"] == id]
+async def worker_by_id(id:int):
+    result = [worker for worker in db if worker.id == id]
     if result is not None:
-        return result[0]
+        return result
     else:
         raise HTTPException(status_code=404, detail="No Worker Found")
 
+@app.post("/api/workers/", response_model=WorkerOutput)
+async def add_worker(worker: WorkerInput) -> WorkerOutput:
+    new_worker = WorkerOutput(name=worker.name, age=worker.age,
+                              profession=worker.profession, id=len(db)+1)
+    db.append(new_worker)
+    save_db(db)
+    return new_worker
+
+
+@app.delete("/api/workers/{id}", status_code=204)
+async def delete_worker(id:int)->None:
+    matches = [worker for worker in db if worker.id == id]
+    if matches is not None:
+        worker = matches[0]
+        db.remove(worker)
+        save_db(db)
+    else:
+        raise HTTPException(status_code=404,
+                            detail=f"No Worker with id={id}Found")
+
+@app.put("/api/workers/{id}", response_model=WorkerOutput)
+async def update_worker(id:int, new_data: WorkerInput) -> WorkerOutput:
+    matches = [worker for worker in db if worker.id == id]
+    if matches is not None:
+        worker = matches[0]
+        worker.age = new_data.age
+        worker.profession = new_data.profession
+        worker.name = new_data.name
+        save_db(db)
+        return worker
+    else:
+        raise HTTPException(status_code=404, detail=f"No Worker with id={id}")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)

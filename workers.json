@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Anna",
+        "age": 25,
+        "profession": "Cleaner",
+        "id": 1
+    },
+    {
+        "name": "Konstantin",
+        "age": 25,
+        "profession": "Recruiter",
+        "id": 2
+    },
+    {
+        "name": "Julia",
+        "age": 30,
+        "profession": "Teacher",
+        "id": 3
+    },
+    {
+        "name": "Vlad",
+        "age": 66,
+        "profession": "Manager",
+        "id": 4
+    },
+    {
+        "name": "Danny",
+        "age": 32,
+        "profession": "Bloger",
+        "id": 5
+    },
+    {
+        "name": "Tommy",
+        "age": 21,
+        "profession": "Youtuber",
+        "id": 6
+    },
+    {
+        "name": "string",
+        "age": 4845,
+        "profession": "stringer",
+        "id": 8
+    },
+    {
+        "name": "string",
+        "age": 0,
+        "profession": "string",
+        "id": 9
+    }
+]
