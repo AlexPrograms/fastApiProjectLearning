@@ -4,7 +4,9 @@ from fastapi import Depends, HTTPException, APIRouter
 from sqlmodel import Session, select
 
 from db import get_session
-from schemas import WorkerOutput, Worker, WorkerInput, Job, JobInput
+from schemas import WorkerOutput, Worker, WorkerInput, Job, JobInput, User
+from routers.auth import get_current_user
+
 
 router = APIRouter(prefix="/api")
 
@@ -30,7 +32,8 @@ async def worker_by_id(id: int, session: Session = Depends(get_session)) -> Work
 
 @router.post("/workers/", response_model=Worker)
 async def add_worker(worker_input: WorkerInput,
-                     session: Session = Depends(get_session)) -> Worker:
+                     session: Session = Depends(get_session),
+                     user:User = Depends(get_current_user)) -> Worker:
     new_worker = Worker.from_orm(worker_input)
     session.add(new_worker)
     session.commit()
