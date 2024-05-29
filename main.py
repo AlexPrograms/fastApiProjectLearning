@@ -5,14 +5,14 @@ from fastapi import FastAPI, Request
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 
-from  routers import workers
 from db import engine
-from routers import workers, web
+from routers import workers, web, auth
 from routers.workers import BadJobException
 
 app = FastAPI(title="Recruitment Info")
 app.include_router(workers.router)
 app.include_router(web.router)
+app.include_router(auth.router)
 
 
 
