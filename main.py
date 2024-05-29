@@ -1,95 +1,42 @@
-from typing import List
-
-from sqlmodel import create_engine, SQLModel, Session, select
+from http import HTTPStatus
+from sqlmodel import SQLModel
 import uvicorn
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, Request
+from starlette.responses import JSONResponse
+from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 
-from schemas import WorkerInput, WorkerOutput, JobInput, JobOutput, Worker, Job
+from  routers import workers
+from db import engine
+from routers import workers, web
+from routers.workers import BadJobException
 
 app = FastAPI(title="Recruitment Info")
+app.include_router(workers.router)
+app.include_router(web.router)
 
-# database creation (change from sqlite to PostgreSQL or whatever)
-engine = create_engine(
-    "sqlite:///recruitment.db",
-    connect_args={"check_same_thread": False},
-    echo=True,
-)
+
 
 # start function
 @app.on_event("startup")
 def startup():
     SQLModel.metadata.create_all(engine)
 
+@app.exception_handler(BadJobException)
+async def uvicorn_exception_handler(request: Request, exc: BadJobException):
+    return JSONResponse(
+        status_code=HTTP_422_UNPROCESSABLE_ENTITY,
+        content={"detail": "Bad Job"},
+    )
+
+@app.middleware("http")
+async def add_workers_cookes(request: Request, call_next):
+    response = await call_next(request)
+    response.set_cookie(key="workers_cookie", value="you_visited_recruitment_CRM_and_got_scammed)")
+    return response
+
+# These are old notes, before refactoring
 # creating session and using dependency injection to use it in every request
 # instead of return I use generator function and yield which could act like an iterator
-def get_session():
-    with Session(engine) as session:
-        yield session
-
-@app.get("/api/workers")
-async def get_workers(age: int = None, profession: str = None,
-                      session: Session = Depends(get_session)) -> List[WorkerOutput]:
-    query = select(Worker)
-    if age:
-        query = query.where(Worker.age == age)
-    if profession:
-        query = query.where(Worker.profession == profession)
-    return session.exec(query).all()
-
-@app.get("/api/workers/{id}", response_model=Worker)
-async def worker_by_id(id: int, session: Session = Depends(get_session)) -> Worker:
-    worker = session.get(Worker, id)
-    if worker:
-        return worker
-    else:
-        raise HTTPException(status_code=404, detail=f"Worker with id {id} is not found")
-
-@app.post("/api/workers/", response_model=Worker)
-async def add_worker(worker_input: WorkerInput,
-                     session: Session = Depends(get_session)) -> Worker:
-    new_worker = Worker.from_orm(worker_input)
-    session.add(new_worker)
-    session.commit()
-    session.refresh(new_worker)
-    return new_worker
-
-@app.delete("/api/workers/{id}", status_code=204)
-async def delete_worker(id: int, session: Session = Depends(get_session)) -> None:
-    worker = session.get(Worker, id)
-    if worker:
-        session.delete(worker)
-        session.commit()
-    else:
-        raise HTTPException(status_code=404, detail=f"No Worker with id={id}")
-
-@app.put("/api/workers/{id}", response_model=Worker)
-async def update_worker(id: int, new_data: WorkerInput,
-                        session: Session = Depends(get_session)) -> Worker:
-    worker = session.get(Worker, id)
-    if worker is not None:
-        worker.profession = new_data.profession
-        worker.age = new_data.age
-        worker.name = new_data.name
-        session.commit()
-        return worker
-    else:
-        raise HTTPException(status_code=404, detail=f"No Worker with id={id}")
-
-@app.post("/api/jobs", response_model=Job)
-async def add_job(worker_ids: List[int], job_input: JobInput,
-                  session: Session = Depends(get_session)) -> Job:
-    employees = []
-    for worker_id in worker_ids:
-        worker = session.get(Worker, worker_id)
-        if worker:
-            employees.append(worker)
-
-    new_job = Job.from_orm(job_input, update={"worker_ids":worker_ids})
-    new_job.workers = employees
-    session.add(new_job)
-    session.commit()
-    session.refresh(new_job)
-    return new_job
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
