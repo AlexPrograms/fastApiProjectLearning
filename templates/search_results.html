@@ -1,17 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Search Results</h1>
-    <ul>
-        {% for worker in workers %}
-        <li>
-            {{worker}}
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="/">Back to search</a>
+    <div class="container">
+        <h1>Search Results</h1>
+        <ul>
+            {% for worker in workers %}
+            <li>
+                <strong>Name:</strong> {{ worker.name }}<br>
+                <strong>Age:</strong> {{ worker.age }}<br>
+                <strong>Profession:</strong> {{ worker.profession }}
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="/">Back to search</a>
+    </div>
 </body>
 </html>

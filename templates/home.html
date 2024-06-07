@@ -1,26 +1,73 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recruitment CRM Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            margin: 10px 0 5px;
+        }
+        input {
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Recruitment CRM</h1>
-    <p>Search for the worker you need:</p>
-    <form action="search" method="post">
-        <table>
-            <tr>
-                <td><label for="age">Age:</label></td>
-                <td><input type="number" min="0" max="105" name="age" required></td>
-            </tr>
-            <tr>
-                <td><label for="profession">Profession:</label></td>
-                <td><input type="text" name="profession" required></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button type="submit">Search</button>
-                </td>
-            </tr>
-        </table>
-    </form>
+    <div class="container">
+        <h1>Welcome to the Recruitment CRM</h1>
+        <p>Search for the worker you need:</p>
+        <form action="/search" method="post">
+            <label for="age">Age:</label>
+            <input type="number" min="0" max="105" name="age" required>
+
+            <label for="profession">Profession:</label>
+            <input type="text" name="profession" required>
+
+            <button type="submit">Search</button>
+        </form>
+    </div>
 </body>
 </html>
