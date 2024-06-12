@@ -51,3 +51,6 @@ pip install fastapi
 ```sh
 pip list
 ````
+## Credentials for auth
+- login: hello
+- password: hello
