@@ -27,8 +27,9 @@ if __name__ == "__main__":
     print("This script will create a user and save it in the database.")
 
     username = input("Please enter username\n")
-    pwd = getpass("Please enter password\n")
-
+    print("Tsffsf")
+    pwd = input()
+    print("Tsffsf")
     with Session(engine) as session:
         user = User(username=username)
         user.set_password(pwd)
